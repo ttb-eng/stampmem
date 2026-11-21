@@ -80,17 +80,12 @@ original = mem.read_source(requested_ref, source_refs=source_refs)
 论文的公开基准来自独立的冻结实验框架。库实现了时间记录、来源标记、可选排序和元数据显隐接口；论文的效果量不等于本库的端到端收益。历史估计精度、真实数据召回、延迟和答题增益需要在部署条件下测量。版本变更见 [CHANGELOG](CHANGELOG.md)。
 
 ## 在不同 Agent 中使用技能
+[下载技能 ZIP](https://github.com/ttb-eng/stampmem/releases/download/v0.4.4/stampmem-skill.zip) 并解压，或从 [GitHub](https://github.com/ttb-eng/stampmem/tree/main/.agents/skills/stampmem) 复制完整的 `stampmem` 技能目录，保留 `SKILL.md` 和 `references/`。按宿主支持的方式加载：
 
-[下载技能 ZIP](https://github.com/ttb-eng/stampmem/releases/download/v0.4.4/stampmem-skill.zip) 并解压，或从仓库复制完整的 `stampmem` 技能目录，保留 `SKILL.md` 和 `references/`。它采用 [Agent Skills 格式](https://agentskills.io/specification)，按客户端的项目级路径放置：
+- **支持 [Agent Skills](https://agentskills.io/specification)**：通过宿主的技能导入功能加载，或把完整目录放到它配置的技能搜索路径。
+- **支持自定义指令或上下文注入**：由宿主加载 `SKILL.md`，接入时参考 `references/integration.md`。
 
-| Agent | 目标项目中的位置 |
-| --- | --- |
-| [Codex](https://developers.openai.com/codex/skills) | `.agents/skills/stampmem/` |
-| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/stampmem/` |
-| [Gemini CLI](https://geminicli.com/docs/cli/skills/) | `.agents/skills/stampmem/` 或 `.gemini/skills/stampmem/` |
-| 自建 Agent | 由宿主读取 `SKILL.md`，按需加载 `references/integration.md` |
-
-技能提供操作说明。要执行记忆读写，宿主还需要能运行 Python，或把库接成受授权的工具。安装 Python 包后，按客户端的说明加载技能。上述目录来自各客户端文档，实际加载和调用尚未逐客户端验证。
+执行读写需要宿主具备 Python 运行环境，或提供已连接 `stampmem` 后端的授权工具。是否自动发现技能、如何调用工具，由宿主决定。
 
 ## 离线示例
 
