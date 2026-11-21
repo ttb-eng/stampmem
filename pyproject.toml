@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stampmem"
+version = "0.4.4"
+description = "带时间戳的 Agent 长期记忆库：批量推断历史文档时间戳 + 时间序检索"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "张天睿" }]
+keywords = [
+    "agent",
+    "long-term-memory",
+    "temporal-reasoning",
+    "rag",
+    "chromadb",
+    "chinese-nlp",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Natural Language :: Chinese (Simplified)",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "chromadb",
+    "sentence-transformers",
+]
+
+[project.optional-dependencies]
+llm = ["openai"]  # 需要调用大模型做冲突判断时
+dev = ["pytest>=7"]
+
+# 显式列出包，**不要用 packages.find**。
+# 本项目根目录下有几十个 memory_db_* 目录（数 GB 的 Chroma 持久化数据）与 .hf 模型缓存，
+# packages.find 会递归遍历整个项目根，导致构建/安装卡住不动（实测 pip 直接挂死）。
+[tool.setuptools]
+packages = ["stampmem"]
+include-package-data = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# -p no:cacheprovider：本环境的沙箱不允许 pytest 在项目根建 pytest-cache-files-*，
+# 会刷一屏 WinError 5 警告；缓存对结果没有影响，直接关掉。
+addopts = "-q -p no:cacheprovider"
