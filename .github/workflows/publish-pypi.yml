@@ -1,0 +1,28 @@
+name: Publish stampmem to PyPI
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  publish:
+    if: github.repository == 'ttb-eng/stampmem' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download and verify the released wheel
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          wheel=stampmem-0.4.4-py3-none-any.whl
+          gh release download v0.4.4 --repo ttb-eng/stampmem --pattern "$wheel" --dir dist
+          echo "5989e7ed9f06c477db69fb9b57f7a70f4798ce8436ffcdd86364e3e2be122044  dist/$wheel" | sha256sum --check --strict
+      - name: Publish the wheel with PyPI Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # release/v1
+        with:
+          packages-dir: dist/
