@@ -4,11 +4,13 @@
 
 ## 安装
 
-需要 Python 3.10 或更高版本。目前未发布到 PyPI。拿到 wheel 后，在虚拟环境中安装：
+需要 Python 3.10 或更高版本。可在虚拟环境中从 [PyPI](https://pypi.org/project/stampmem/) 安装：
 
 ```bash
-python -m pip install stampmem-0.4.4-py3-none-any.whl
+python -m pip install stampmem
 ```
+
+也可从 [GitHub Releases](https://github.com/ttb-eng/stampmem/releases) 下载 wheel，再用 `python -m pip install <wheel文件>` 安装。
 
 从源码安装则在本目录运行 `python -m pip install .`。默认在本地运行 [BAAI/bge-small-zh-v1.5](https://huggingface.co/BAAI/bge-small-zh-v1.5)；首次使用需取得模型文件，不需要 LLM API 密钥。也可以传入已下载的 Sentence Transformers 模型目录：
 
