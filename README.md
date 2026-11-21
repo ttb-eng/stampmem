@@ -12,6 +12,8 @@ python -m pip install stampmem
 
 也可从 [GitHub Releases](https://github.com/ttb-eng/stampmem/releases) 下载 wheel，再用 `python -m pip install <wheel文件>` 安装。
 
+建议用项目自己的 Python 虚拟环境。Windows / Python 3.13.5 的全新环境已从 PyPI 安装 0.4.4 及其依赖，`pip check` 和两个离线示例均通过。这个验证使用测试向量，未覆盖其他平台或语义模型首次下载。
+
 从源码安装则在本目录运行 `python -m pip install .`。默认在本地运行 [BAAI/bge-small-zh-v1.5](https://huggingface.co/BAAI/bge-small-zh-v1.5)；首次使用需取得模型文件，不需要 LLM API 密钥。也可以传入已下载的 Sentence Transformers 模型目录：
 
 ```python
@@ -77,9 +79,18 @@ original = mem.read_source(requested_ref, source_refs=source_refs)
 
 论文的公开基准来自独立的冻结实验框架。库实现了时间记录、来源标记、可选排序和元数据显隐接口；论文的效果量不等于本库的端到端收益。历史估计精度、真实数据召回、延迟和答题增益需要在部署条件下测量。版本变更见 [CHANGELOG](CHANGELOG.md)。
 
-## Codex 技能
+## 在不同 Agent 中使用技能
 
-仓库内置 [stampmem 技能](.agents/skills/stampmem/SKILL.md)。在这个仓库的新 Codex 会话中使用 `$stampmem`；接入其他项目时，把 `.agents/skills/stampmem/` 复制到目标项目的同一路径。技能提供接入和操作指导。应用负责调用库、管理权限和绑定数据库。
+[下载技能 ZIP](https://github.com/ttb-eng/stampmem/releases/download/v0.4.4/stampmem-skill.zip) 并解压，或从仓库复制完整的 `stampmem` 技能目录，保留 `SKILL.md` 和 `references/`。它采用 [Agent Skills 格式](https://agentskills.io/specification)，按客户端的项目级路径放置：
+
+| Agent | 目标项目中的位置 |
+| --- | --- |
+| [Codex](https://developers.openai.com/codex/skills) | `.agents/skills/stampmem/` |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/stampmem/` |
+| [Gemini CLI](https://geminicli.com/docs/cli/skills/) | `.agents/skills/stampmem/` 或 `.gemini/skills/stampmem/` |
+| 自建 Agent | 由宿主读取 `SKILL.md`，按需加载 `references/integration.md` |
+
+技能提供操作说明。要执行记忆读写，宿主还需要能运行 Python，或把库接成受授权的工具。安装 Python 包后，按客户端的说明加载技能。上述目录来自各客户端文档，实际加载和调用尚未逐客户端验证。
 
 ## 离线示例
 

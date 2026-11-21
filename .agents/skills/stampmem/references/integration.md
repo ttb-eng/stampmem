@@ -1,6 +1,14 @@
-# Integration with stampmem 0.4.4
+# Integrate stampmem with an agent
 
-Install the supplied local wheel into the application's virtual environment. Use `DefaultEmbedder(model_name=...)` with a compatible local Sentence Transformers model directory if the default model is not available. An existing Chroma collection must keep the same embedding model; rebuild into a separate collection when changing models. `use_model=False` is only for offline smoke tests.
+Install `stampmem` in the virtual environment used by the host application.
+
+```sh
+python -m pip install stampmem
+```
+
+If the agent can run Python, use the application's configured memory backend. For a tool-only agent, the host can expose narrow operations for retrieval, authorized writes, and optional source readback. The host determines the authenticated user, database, and collection. Pass the query or record text through the tool interface and keep backend paths and private reference maps out of model inputs. If the host has no path to execute these operations, provide setup guidance without acting on memory.
+
+Use `DefaultEmbedder(model_name=...)` with a compatible local Sentence Transformers model directory if the default model is unavailable. An existing Chroma collection must keep the same embedding model. Rebuild into a separate collection when changing models. `use_model=False` is only for offline smoke tests.
 
 ```python
 from stampmem import Memory, render_context
